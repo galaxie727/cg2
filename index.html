@@ -507,9 +507,10 @@ function randInt(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 /* girls */
-function makeGirl(prefix, key, name, locked=false, chiOverText="……"){
-  const NORMAL_COUNT = 7; // ← normalは7枚
+function makeGirl(prefix, key, name, locked=false, chiOverText="……", replies={}){
+  const NORMAL_COUNT = 7;
   const normal = Array.from({length:NORMAL_COUNT}, (_,i)=> `${prefix}_normal_${String(i+1).padStart(2,"0")}.png`);
+
   return {
     key, name, locked,
     icon: `${prefix}_icon.png`,
@@ -523,6 +524,13 @@ function makeGirl(prefix, key, name, locked=false, chiOverText="……"){
       s90:  `${prefix}_score_90.png`,
       s95:  `${prefix}_score_95.png`,
       s100: `${prefix}_score_100.png`
+    },
+    // ★追加：女の子別返事（デフォルトつき）
+    replies: {
+      yes:  replies.yes  ?? "笑",
+      no:   replies.no   ?? "クスッ",
+      gyuu: replies.gyuu ?? "ニコッ",
+      chi:  replies.chi  ?? "ギュウ" // チーを選んだとき用（必要なら変える）
     }
   };
 }
@@ -544,9 +552,25 @@ function makeGirlLite(prefix, key, name){
    - 本当に icon/top だけなら makeGirlLite に戻すのが安全
    - 「試し解除」したいなら makeGirl にしてOK（ただし画像不足だと404） */
 const GIRLS = [
-  makeGirl("girlA","A","Girl A", false, "……（チー娘Aは無言で去っていった）"),
-  makeGirl("girlB","B","Girl B", false, "……（チー娘B：見なかったことにするね）"),
-  makeGirl("girlC","C","Girl C", false, "……（チー娘C：次はちゃんとして？）"),
+  makeGirl("girlA","A","Girl A", false, "……（チー娘Aは無言で去っていった）", {
+    yes:"ふふ", no:"……", gyuu:"にこ", chi:"ギュウ"
+  }),
+  makeGirl("girlB","B","Girl B", false, "……（チー娘B：見なかったことにするね）", {
+    yes:"うん", no:"ちがうよ", gyuu:"えへ", chi:"ギュウ"
+  }),
+  makeGirl("girlC","C","Girl C", false, "……（チー娘C：次はちゃんとして？）", {
+    yes:"よし", no:"だめ", gyuu:"へへ", chi:"ギュウ"
+  }),
+  makeGirl("girlD","D","Girl D", false, "……（チー娘D：試運転中）", {
+    yes:"ふーん", no:"まあね", gyuu:"にや", chi:"ギュウ"
+  }),
+  makeGirl("girlE","E","Girl E", false, "……（チー娘E：試運転中）", {
+    yes:"OK", no:"NO", gyuu:"よし", chi:"ギュウ"
+  }),
+  makeGirl("girlF","F","Girl F", false, "……（チー娘F：試運転中）", {
+    yes:"へぇ", no:"ふむ", gyuu:"にこっ", chi:"ギュウ"
+  })
+];
 
   // ▼ 試し解除（normal/score等がある前提）
   makeGirl("girlD","D","Girl D", false, "……（チー娘D：試運転中）"),
@@ -1202,12 +1226,14 @@ function answer(t){
   const isLast = (i === playQuestions.length - 1);
 
   setTimeout(()=>{
-    if(t==="はい")        setTextWithHeart("笑");
-    else if(t==="いいえ") setTextWithHeart("クスッ");
-    else if(t==="ギュウ") setTextWithHeart("ニコッ");
-    else if(t==="チー")   setGyuuWithHeart();
-    else                  setTextWithHeart("笑");
-  }, GIRL_REPLY_DELAY_MS);
+  const g = getPlayGirl(); // ★オールスターでもこの子が出た扱いになる
+
+  if(t==="はい")        setTextWithHeart(g.replies.yes);
+  else if(t==="いいえ") setTextWithHeart(g.replies.no);
+  else if(t==="ギュウ") setTextWithHeart(g.replies.gyuu);
+  else if(t==="チー")   setGyuuWithHeart();
+  else                  setTextWithHeart(g.replies.yes);
+}, GIRL_REPLY_DELAY_MS);
 
   setTimeout(()=>{
     if(isLast){
