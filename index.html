@@ -1090,6 +1090,11 @@ function cheeOnlyPickStage(){
 
 /* question */
 function showQuestion(){
+    // ★保険：playQuestions が未生成/空なら生成
+  if(!Array.isArray(playQuestions) || playQuestions.length === 0){
+    playQuestions = makePlayQuestions();
+    i = 0;
+  }
   ended=false; locked=false; mode="quiz";
   gameScreen.classList.remove("result");
   resultBox.classList.add("hide");
