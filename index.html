@@ -1025,8 +1025,22 @@ function showOnly(screen){
 function goTop(){
   stopCheeTimer();
   resetCheeVisuals();
-  mode="quiz"; ended=false; locked=false; cheeCooldown=false;
+
+  // ★重要：状態リセット（事故防止）
+  ended=false;
+  locked=false;
+  cheeCooldown=false;
+  mode="quiz";
+  gameMode="quiz";
+
+  i=0;
+  playQuestions = [];
   playGirl=null;
+
+  cheeStage = 1;
+  lastGyuuIndex = -1;
+  isNewRecordRun = false;
+
   counterEl.textContent="-";
   refreshBestLine();
   showOnly(topScreen);
