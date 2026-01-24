@@ -265,6 +265,24 @@ header{
   min-height:130px;
   overflow:visible;
 }
+/* === レイヤー順を強制固定（iOS対策） === */
+#gameScreen{ isolation:isolate; }
+
+#gameScreen .bg{ z-index:0; }
+#gameScreen .vignette{ z-index:5; }
+#gameScreen .overlay{ z-index:10; }   /* 吹き出し＆ボタン */
+#gameScreen .cut{ z-index:20; }
+#gameScreen .flash{ z-index:30; }
+#gameScreen .announce{ z-index:40; }  /* ←これが必ず最前面 */
+#gameScreen #resultBox{ z-index:45; }
+
+/* 見えたか確認用に一旦デカくする（後で戻してOK） */
+#gameScreen .announce{
+  font-size:26px;
+}
+#gameScreen.announce .announce{
+  opacity:1 !important;
+}
 /* チー娘登場を絶対に前に出す */
 #gameScreen .announce{ z-index: 50; }
 #gameScreen .overlay{ z-index: 10; }
