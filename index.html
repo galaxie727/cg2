@@ -530,7 +530,10 @@ function setPreviewKey(k){ localStorage.setItem(GIRL_PREVIEW_KEY, k); }
 function shuffle(a){ return a.slice().sort(()=>Math.random()-0.5); }
 function randInt(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
+function safePick(list, fallback){
+  if(Array.isArray(list) && list.length) return pick(list);
+  return fallback || "";
+}
 /* girls */
 function makeGirl(prefix, key, name, locked=false, chiOverText="……", replies={}){
   const NORMAL_COUNT = 7;
