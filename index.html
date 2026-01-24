@@ -1448,7 +1448,7 @@ function restart(modeName){
   resultBox.classList.add("hide");
 
   showOnly(gameScreen);
-
+  if(gameMode === "cheeOnly") playQuestions = []; // ★診断の残りカス消す
   if(gameMode === "cheeOnly"){
     cheeStage = 1;
     lastGyuuIndex = -1;
