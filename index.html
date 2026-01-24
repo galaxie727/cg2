@@ -662,7 +662,7 @@ const POST_CUT_HOLD_MS        = 360;
 const CHEE_SILENCE_MS         = 260;
 const CHEE_SUCCESS_HOLD_MS    = 820;
 
-const ANNOUNCE_EXTRA_MS       = 520;
+const ANNOUNCE_EXTRA_MS       = 1200;
 const FLASH_ON_MS             = 120;
 
 const STAGE3_BOOST_MS = 500;
@@ -1118,6 +1118,7 @@ function startCheeBattle(level){
       setTimeout(()=>{
         speechEl.className = "cheeWord" + (level.stars>=3 ? " big" : "");
         speechEl.textContent = "チー！";
+        speechEl.style.opacity = "1";
 
         if(gameMode === "cheeOnly") buildChoicesChee10();
         else buildChoices4();
