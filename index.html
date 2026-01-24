@@ -1114,9 +1114,10 @@ function maybeChee(){
 function startCheeBattle(level){
   if(ended) return;
 
-  mode="chee";
-  locked=false;
+  mode = "chee";
+  locked = false;
 
+  // 演出状態ON
   gameScreen.classList.add("cut","announce","chee");
   if(level.stars >= 3) gameScreen.classList.add("stage3plus");
 
@@ -1125,16 +1126,24 @@ function startCheeBattle(level){
   const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
   gameBg.style.backgroundImage = `url("${pick(list)}")`;
 
+  // --- CUT解除タイミング ---
   setTimeout(()=>{
-    setTimeout(()=>{
-      gameScreen.classList.remove("cut","announce");
+    // まず暗転(cut)だけ解除
+    gameScreen.classList.remove("cut");
 
-      qEl.textContent="";
+    // チー娘登場は少し残す
+    setTimeout(()=>{
+      gameScreen.classList.remove("announce");
+    }, ANNOUNCE_SHOW_MS);
+
+    // --- 本編へ ---
+    setTimeout(()=>{
+      qEl.textContent = "";
       qEl.classList.add("hide");
       clearSpeech();
 
       setTimeout(()=>{
-        speechEl.className = "cheeWord" + (level.stars>=3 ? " big" : "");
+        speechEl.className = "cheeWord" + (level.stars >= 3 ? " big" : "");
         speechEl.textContent = "チー！";
         speechEl.style.opacity = "1";
 
@@ -1146,7 +1155,8 @@ function startCheeBattle(level){
       }, CHEE_SILENCE_MS);
 
     }, POST_CUT_HOLD_MS);
-  }, CUT_MS + ANNOUNCE_EXTRA_MS);
+
+  }, CUT_MS);
 }
 
 function startCheeTimer(level){
