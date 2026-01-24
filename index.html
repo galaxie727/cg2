@@ -265,6 +265,13 @@ header{
   min-height:130px;
   overflow:visible;
 }
+/* チー娘登場を絶対に前に出す */
+#gameScreen .announce{ z-index: 50; }
+#gameScreen .overlay{ z-index: 10; }
+#gameScreen .bg{ z-index: 0; }
+#gameScreen .vignette{ z-index: 2; }
+#gameScreen .cut{ z-index: 30; }
+#gameScreen .flash{ z-index: 40; }
 .question{
   font-size:20px;
   font-weight:800;
