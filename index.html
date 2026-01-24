@@ -751,6 +751,18 @@ let isNewRecordRun = false;
 
 let previewBgKey = getPreviewKey() || "";
 
+/* チー娘演出タイマー管理（残りタイマーが次回を潰すのを防ぐ） */
+let cheeTimeouts = [];
+function tset(fn, ms){
+  const id = setTimeout(fn, ms);
+  cheeTimeouts.push(id);
+  return id;
+}
+function clearCheeTimeouts(){
+  cheeTimeouts.forEach(clearTimeout);
+  cheeTimeouts = [];
+}
+
 /* =====================
    ALL STAR（課金ロック付き ON/OFF）
    ONなら「診断」も「チー娘」も全部オールスター
@@ -928,6 +940,8 @@ function stopCheeTimer(){ cancelAnimationFrame(rafId); rafId=0; }
 function hideGauge(){ gaugeWrap.classList.remove("show"); gaugeBar.style.transform="scaleX(0)"; }
 function showGauge(){ gaugeWrap.classList.add("show"); }
 function resetCheeVisuals(){
+  clearCheeTimeouts(); // ★これ重要（残ってる演出タイマー全消し）
+
   gameScreen.classList.remove("chee","cut","announce","hold","stage3plus","result");
   hideGauge();
   stopCheeTimer();
@@ -1114,36 +1128,35 @@ function maybeChee(){
 function startCheeBattle(level){
   if(ended) return;
 
-  mode = "chee";
-  locked = false;
+  clearCheeTimeouts(); // ★開始時も念のため全消し
 
-  // 演出状態ON
+  mode="chee";
+  locked=false;
+
   gameScreen.classList.add("cut","announce","chee");
   if(level.stars >= 3) gameScreen.classList.add("stage3plus");
 
-  /* cheeでも同じ出演キャラ固定 */
+  // cheeでも同じ出演キャラ固定
   const g = getPlayGirl();
   const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
   gameBg.style.backgroundImage = `url("${pick(list)}")`;
 
-  // --- CUT解除タイミング ---
-  setTimeout(()=>{
-    // まず暗転(cut)だけ解除
+  // ここから全部 tset で積む（= 後で一括キャンセルできる）
+  tset(()=>{
+    // 暗転解除（announceは残す）
     gameScreen.classList.remove("cut");
 
-    // チー娘登場は少し残す
-    setTimeout(()=>{
-      gameScreen.classList.remove("announce");
-    }, ANNOUNCE_SHOW_MS);
+    // announceは確実に見える時間だけ残す
+    tset(()=>{ gameScreen.classList.remove("announce"); }, 1200);
 
-    // --- 本編へ ---
-    setTimeout(()=>{
-      qEl.textContent = "";
+    // 本編へ
+    tset(()=>{
+      qEl.textContent="";
       qEl.classList.add("hide");
       clearSpeech();
 
-      setTimeout(()=>{
-        speechEl.className = "cheeWord" + (level.stars >= 3 ? " big" : "");
+      tset(()=>{
+        speechEl.className = "cheeWord" + (level.stars>=3 ? " big" : "");
         speechEl.textContent = "チー！";
         speechEl.style.opacity = "1";
 
@@ -1158,7 +1171,7 @@ function startCheeBattle(level){
 
   }, CUT_MS);
 }
-
+  
 function startCheeTimer(level){
   stopCheeTimer();
   showGauge();
