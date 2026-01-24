@@ -1059,8 +1059,13 @@ function renderGirlGrid(){
 /* background apply (uses playGirl) */
 function applyGameQuestionBg(){
   const g = getPlayGirl();
-  const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
-  gameBg.style.backgroundImage = `url("${list[i % list.length]}")`;
+const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
+
+let bg = g.top || getSelectedGirl().top;
+if(Array.isArray(list) && list.length){
+  bg = list[i % list.length];
+}
+gameBg.style.backgroundImage = `url("${bg}")`;
 }
 
 /* chee levels */
@@ -1141,8 +1146,9 @@ function startCheeBattle(level){
 
   // cheeでも同じ出演キャラ固定
   const g = getPlayGirl();
-  const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
-  gameBg.style.backgroundImage = `url("${pick(list)}")`;
+const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
+const bg = safePick(list, g.top || getSelectedGirl().top);
+gameBg.style.backgroundImage = `url("${bg}")`;
 
   // ここから全部 tset で積む（= 後で一括キャンセルできる）
   tset(()=>{
