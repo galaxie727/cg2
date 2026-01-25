@@ -936,6 +936,38 @@ function flashBg(){
   setTimeout(()=> flashEl.classList.remove("on"), FLASH_ON_MS);
 }
 
+function playAnnounceSE(){
+  try{
+    ensureAudio();
+    const t0 = audioCtx.currentTime;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(740, t0);
+    osc.frequency.exponentialRampToValueAtTime(1040, t0 + 0.06);
+
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.exponentialRampToValueAtTime(0.22, t0 + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(t0);
+    osc.stop(t0 + 0.20);
+  }catch(e){}
+}
+
+/* ★「チー娘登場」を単独で確実に見せる（フェード＋SE） */
+const ANNOUNCE_SHOW_MS = 1500; // ←見える保証時間（好みで調整）
+function showCheeAnnounce(){
+  gameScreen.classList.add("announce");
+  playAnnounceSE();
+  tset(()=>{ gameScreen.classList.remove("announce"); }, ANNOUNCE_SHOW_MS);
+}
+  
 /* colors */
 const buttonColors = [
   "#d64545","#c0392b","#e67e22","#f1c40f",
