@@ -1241,7 +1241,7 @@ function startCheeBattle(level){
 
   // ★ここで「チー娘登場」を確実に見せる（フェード＋SE）
   showCheeAnnounce();
-tset(()=>{ gameScreen.classList.remove("announce"); }, 3000);
+tset(()=>{ gameScreen.classList.remove("announce"); }, 2000);
   // ★announceが消えてから本編演出を開始（= 見える時間を保証）
   tset(()=>{
     if(ended) return;
