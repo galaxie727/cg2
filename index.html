@@ -1481,7 +1481,10 @@ function endResult(){
   const rank = rankFromScore(score);
   const key = scoreToKey(score);
   let img = (g.score && g.score[key]) ? g.score[key] : g.top;
-
+const line = (g.scoreText && g.scoreText[key]) ? g.scoreText[key] : "";
+if(line){
+  setTimeout(()=> setSpeechPlain(line), 520);
+}
   gameBg.style.backgroundImage = `url("${img}")`;
 
   qEl.textContent="";
@@ -1490,10 +1493,6 @@ function endResult(){
 
   resultPct.innerHTML = `0<small>%</small>`;
   animatePercent(score);
-
-  if(rank==="gifted"){
-    setTimeout(()=> setSpeechPlain("……君、チギュテッドだね。"), 520);
-  }
 
   renderEndButtonsDelayed(0);
 }
