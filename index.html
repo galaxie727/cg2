@@ -575,7 +575,7 @@ function safePick(list, fallback){
   return fallback || "";
 }
 /* girls */
-function makeGirl(prefix, key, name, locked=false, chiOverText="……", replies={}){
+function makeGirl(prefix, key, name, locked=false, chiOverText="……", replies={}, scoreText={}){
   const NORMAL_COUNT = 7;
   const normal = Array.from({length:NORMAL_COUNT}, (_,i)=> `${prefix}_normal_${String(i+1).padStart(2,"0")}.png`);
 
@@ -593,12 +593,19 @@ function makeGirl(prefix, key, name, locked=false, chiOverText="……", replies
       s95:  `${prefix}_score_95.png`,
       s100: `${prefix}_score_100.png`
     },
-    // ★追加：女の子別返事（デフォルトつき）
+    // ★追加：採点画面の一言
+    scoreText: {
+      s80:  scoreText.s80  ?? "",
+      s90:  scoreText.s90  ?? "",
+      s95:  scoreText.s95  ?? "",
+      s100: scoreText.s100 ?? ""
+    },
+    // 返事
     replies: {
       yes:  replies.yes  ?? "笑",
       no:   replies.no   ?? "クスッ",
       gyuu: replies.gyuu ?? "ニコッ",
-      chi:  replies.chi  ?? "ギュウ" // チーを選んだとき用（必要なら変える）
+      chi:  replies.chi  ?? "ギュウ"
     }
   };
 }
