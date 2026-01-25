@@ -406,33 +406,7 @@ header{
 #resultBox .pctRow{ display:flex; justify-content:flex-end; align-items:baseline; }
 #resultBox .pct{ font-size:88px; font-weight:900; line-height:1; }
 #resultBox .pct small{ font-size:20px; opacity:.95; margin-left:2px; }
-/* ===== RESULT画面：女の子の一言がはみ出る問題の修正 ===== */
 
-/* RESULT時：質問文は表示しない */
-#gameScreen.result #question{
-  display:none;
-}
-
-/* RESULT時：bubbleを潰さず、結果付近に固定 */
-#gameScreen.result .bubble{
-  position:absolute;
-  left:16px;
-  right:16px;
-  bottom:400px;        /* ←位置調整したい時はここ */
-  background:transparent;
-  padding:0;
-  min-height:0;
-}
-
-/* RESULT時：speechを absolute解除して普通に表示 */
-#gameScreen.result #speech{
-  position:relative;   /* ←これが一番重要 */
-  right:auto;
-  bottom:auto;
-  text-align:left;     /* 右寄せなら right にしてOK */
-  font-size:18px;
-  max-width:100%;
-}
 /* RESULT：女の子の一言の最後にハート */
 #gameScreen.result #speech::after{
   content:" ❤";
