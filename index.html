@@ -233,13 +233,15 @@ header{
 .cut{ position:absolute;inset:0; background:#000; opacity:0; pointer-events:none; transition:opacity .28s; }
 #gameScreen.cut .cut{opacity:1}
 
+/* announce をフェード表示にする（見える時間を保証） */
 .announce{
-  position:absolute;inset:0;
-  display:flex;justify-content:center;align-items:center;
-  font-weight:900;letter-spacing:.2em;
-  opacity:0;pointer-events:none;
-  transition:opacity .18s;
-  text-shadow:0 10px 28px rgba(0,0,0,.85);
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .22s ease, transform .22s ease;
+}
+#gameScreen.announce .announce{
+  opacity:1;
+  transform:translateY(0);
 }
 .announce::before{
   content:"";
