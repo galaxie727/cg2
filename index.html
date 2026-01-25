@@ -439,6 +439,50 @@ header{
   color:#ff2d55;
   margin-left:4px;
 }
+/* =========================
+   RESULT：女の子の一言 吹き出し化
+========================= */
+#gameScreen.result #speech{
+  position:absolute;
+  left:16px;
+  right:80px;          /* 右は少し空ける（顔に被らない用） */
+  bottom:340px;        /* ←今の bottom:300px より少し上 */
+  
+  background:rgba(255,255,255,.92);
+  color:#333;
+  padding:14px 18px;
+  border-radius:18px;
+  
+  font-size:16px;
+  font-weight:900;
+  line-height:1.45;
+  letter-spacing:.06em;
+  
+  text-shadow:none;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.25);
+
+  max-width:90%;
+}
+
+/* 吹き出しのしっぽ */
+#gameScreen.result #speech::before{
+  content:"";
+  position:absolute;
+  left:28px;
+  bottom:-10px;
+  width:0;
+  height:0;
+  border:10px solid transparent;
+  border-top-color:rgba(255,255,255,.92);
+}
+  
+/* ❤️はそのまま残す */
+#gameScreen.result #speech::after{
+  content:" ❤";
+  color:#ff2d55;
+  margin-left:4px;
+}
 </style>
 </head>
 
