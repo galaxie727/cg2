@@ -975,10 +975,15 @@ function playAnnounceSE(){
 
 /* ★「チー娘登場」を単独で確実に見せる（フェード＋SE） */
 const ANNOUNCE_SHOW_MS = 1500; // ←見える保証時間（好みで調整）
-function showCheeAnnounce(){
+
+  function showCheeAnnounce(){
+  locked = true;
   gameScreen.classList.add("announce");
   playAnnounceSE();
-  tset(()=>{ gameScreen.classList.remove("announce"); }, ANNOUNCE_SHOW_MS);
+  tset(()=>{
+    gameScreen.classList.remove("announce");
+    locked = false;
+  }, ANNOUNCE_SHOW_MS);
 }
   
 /* colors */
