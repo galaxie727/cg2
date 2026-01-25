@@ -1231,7 +1231,11 @@ function startCheeBattle(level){
   resetCheeVisuals();         // ★ここで一旦演出状態を初期化（announceも消えるので後で付け直す）
 
   mode="chee";
-  locked=true;                // announce中は操作不可にする
+  locked=true;       
+  
+  clearSpeech();
+speechEl.style.opacity = "0";
+showCheeAnnounce();
 
   // 背景は先に決めておく（announce中もそれっぽく見える）
   const g = getPlayGirl();
