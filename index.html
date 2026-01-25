@@ -1214,49 +1214,59 @@ function maybeChee(){
 function startCheeBattle(level){
   if(ended) return;
 
-  clearCheeTimeouts(); // ★開始時も念のため全消し
+  clearCheeTimeouts();        // 既存タイマー全消し
+  resetCheeVisuals();         // ★ここで一旦演出状態を初期化（announceも消えるので後で付け直す）
 
   mode="chee";
-  locked=false;
+  locked=true;                // announce中は操作不可にする
 
-  gameScreen.classList.add("cut","announce","chee");
-  if(level.stars >= 3) gameScreen.classList.add("stage3plus");
-
-  // cheeでも同じ出演キャラ固定
+  // 背景は先に決めておく（announce中もそれっぽく見える）
   const g = getPlayGirl();
-const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
-const bg = safePick(list, g.top || getSelectedGirl().top);
-gameBg.style.backgroundImage = `url("${bg}")`;
+  const list = (g.normal && g.normal.length) ? g.normal : getSelectedGirl().normal;
+  const bg = safePick(list, g.top || getSelectedGirl().top);
+  gameBg.style.backgroundImage = `url("${bg}")`;
 
-  // ここから全部 tset で積む（= 後で一括キャンセルできる）
+  // ★ここで「チー娘登場」を確実に見せる（フェード＋SE）
+  showCheeAnnounce();
+
+  // ★announceが消えてから本編演出を開始（= 見える時間を保証）
   tset(()=>{
-    // 暗転解除（announceは残す）
-    gameScreen.classList.remove("cut");
+    if(ended) return;
 
-    // announceは確実に見える時間だけ残す
-    tset(()=>{ gameScreen.classList.remove("announce"); }, 1200);
+    locked=false;
 
-    // 本編へ
+    gameScreen.classList.add("chee");
+    if(level.stars >= 3) gameScreen.classList.add("stage3plus");
+
+    // 暗転演出（必要なら残す）
+    gameScreen.classList.add("cut");
+
     tset(()=>{
-      qEl.textContent="";
-      qEl.classList.add("hide");
-      clearSpeech();
+      gameScreen.classList.remove("cut");
 
+      // 本編へ
       tset(()=>{
-        speechEl.className = "cheeWord" + (level.stars>=3 ? " big" : "");
-        speechEl.textContent = "チー！";
-        speechEl.style.opacity = "1";
+        qEl.textContent="";
+        qEl.classList.add("hide");
+        clearSpeech();
 
-        if(gameMode === "cheeOnly") buildChoicesChee10();
-        else buildChoices4();
+        tset(()=>{
+          speechEl.className = "cheeWord" + (level.stars>=3 ? " big" : "");
+          speechEl.textContent = "チー！";
+          speechEl.style.opacity = "1";
 
-        startCheeTimer(level);
-        setButtonsEnabled(true);
-      }, CHEE_SILENCE_MS);
+          if(gameMode === "cheeOnly") buildChoicesChee10();
+          else buildChoices4();
 
-    }, POST_CUT_HOLD_MS);
+          startCheeTimer(level);
+          setButtonsEnabled(true);
+        }, CHEE_SILENCE_MS);
 
-  }, CUT_MS);
+      }, POST_CUT_HOLD_MS);
+
+    }, CUT_MS);
+
+  }, ANNOUNCE_SHOW_MS);
 }
   
 function startCheeTimer(level){
