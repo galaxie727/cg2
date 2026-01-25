@@ -457,6 +457,13 @@ header{
   color:#ff2d55;
   margin-left:4px;
 }
+  /* speech を画面（overlay）基準で置けるようにする */
+#gameScreen .overlay{ position:relative; }
+
+/* RESULT時だけ bubble の relative を外して基準にしない */
+#gameScreen.result .bubble{
+  position:static;
+}
 </style>
 </head>
 
