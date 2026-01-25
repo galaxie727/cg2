@@ -393,7 +393,7 @@ header{
 #resultBox{
   position:absolute;
   left:16px; right:16px;
-  bottom:180px;
+  bottom:150px;
   pointer-events:none;
   text-shadow:0 10px 28px rgba(0,0,0,.75);
 }
@@ -404,7 +404,7 @@ header{
   margin-bottom:12px;
 }
 #resultBox .pctRow{ display:flex; justify-content:flex-end; align-items:baseline; }
-#resultBox .pct{ font-size:52px; font-weight:900; line-height:1; }
+#resultBox .pct{ font-size:64px; font-weight:900; line-height:1; }
 #resultBox .pct small{ font-size:20px; opacity:.95; margin-left:2px; }
 /* ===== RESULT画面：女の子の一言がはみ出る問題の修正 ===== */
 
@@ -432,6 +432,12 @@ header{
   text-align:left;     /* 右寄せなら right にしてOK */
   font-size:18px;
   max-width:100%;
+}
+/* RESULT：女の子の一言の最後にハート */
+#gameScreen.result #speech::after{
+  content:" ❤";
+  color:#ff2d55;
+  margin-left:4px;
 }
 </style>
 </head>
