@@ -1646,7 +1646,7 @@ function endResult(){
   const key = scoreToKey(score);
   let img = (g.score && g.score[key]) ? g.score[key] : g.top;
 const line = (g.scoreText && g.scoreText[key]) ? g.scoreText[key] : "";
-if(line){
+if(line && score !== 100){
   setTimeout(()=> setTextWithHeart(line), 520);
 }
   gameBg.style.backgroundImage = `url("${img}")`;
@@ -1659,7 +1659,13 @@ if(line){
   resultPct.innerHTML = `0<small>%</small>`;
   animatePercent(score);
 
-  renderEndButtonsDelayed(0);
+    // ★100%だけチギュテッド会話へ
+  if(score === 100){
+    // ここではすぐ「もう一回」ボタンを出さず、会話を開始
+    startGiftedEnding(g);
+  }else{
+    renderEndButtonsDelayed(0);
+  }
 }
 
 /* game over */
