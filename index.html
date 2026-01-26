@@ -403,45 +403,40 @@ header{
 #resultBox .pct{ font-size:88px; font-weight:900; line-height:1; }
 #resultBox .pct small{ font-size:20px; opacity:.95; margin-left:2px; }
 
-/* RESULTでも診断と同じ speech 表示。ただしボタンに被らないよう少し上げる */
-#gameScreen.result #speech{
-  right:14px;
-  bottom:calc(env(safe-area-inset-bottom) + 210px);
-  font-size:clamp(22px, 6vw, 34px);
-  text-shadow:0 10px 28px rgba(0,0,0,.75);
-}
+/* ===== RESULT：白地＋黒文字（顔にかからない上位置、右下にセリフ） ===== */
 
-/* RESULTでも問題と同じ吹き出し */
+/* RESULTでも問題と同じ「吹き出し」だが白地にする */
 #gameScreen.result .bubble{
-  position:relative;                 /* ←基準にする */
-  background:rgba(255,255,255,.08);
-  border-radius:14px;
-  padding:16px 18px;
+  position:relative;                 /* セリフ配置の基準 */
+  background:rgba(255,255,255,.90);  /* 白地 */
+  border-radius:22px;
+  padding:18px 20px;
   min-height:130px;
-  box-shadow:none;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  text-shadow:none;                  /* 黒文字にするので */
 }
 
-/* RESULTの一言を吹き出し右下に */
+/* RESULTのセリフは吹き出し右下 */
 #gameScreen.result #speech{
   position:absolute;
   right:12px;
   bottom:10px;
 
   text-align:right;
-  font-size:18px;
+  font-size:20px;
   font-weight:900;
   letter-spacing:.06em;
   line-height:1.25;
 
-  color:#fff;
-  text-shadow:0 6px 18px rgba(0,0,0,.75);
+  color:#111;                        /* 黒文字 */
+  text-shadow:none;                  /* 黒文字なので影なし */
 
   max-width:80%;
   white-space:normal;
   pointer-events:none;
 }
 
-/* ❤の影が強ければ消す（好み） */
+/* ❤だけ赤はそのまま、影はなし */
 #gameScreen.result #speech .heartOnly{
   text-shadow:none;
 }
