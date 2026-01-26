@@ -575,6 +575,47 @@ window.onerror = function (msg, src, line, col, err) {
   return true;
 };
 /* =========================
+   DEBUG SWITCH
+========================= */
+const DEBUG = true; // ←制作中はtrueでOK。切りたい時だけfalse
+
+/* デバッグ用：画面にJSエラーを出す */
+if (DEBUG) {
+  window.onerror = function (msg, src, line, col, err) {
+    const text =
+      "JS ERROR:\n" +
+      msg + "\n" +
+      "line: " + line + " col: " + col + "\n" +
+      (err && err.stack ? err.stack : "") + "\n" +
+      (src ? ("src: " + src) : "");
+
+    let box = document.getElementById("errBox");
+    if (!box) {
+      box = document.createElement("pre");
+      box.id = "errBox";
+      box.style.position = "fixed";
+      box.style.left = "10px";
+      box.style.right = "10px";
+      box.style.bottom = "10px";
+      box.style.maxHeight = "40vh";
+      box.style.overflow = "auto";
+      box.style.zIndex = "99999";
+      box.style.background = "rgba(0,0,0,.88)";
+      box.style.border = "2px solid rgba(255,0,0,.6)";
+      box.style.padding = "10px";
+      box.style.fontSize = "12px";
+      box.style.whiteSpace = "pre-wrap";
+      box.style.borderRadius = "12px";
+      box.style.pointerEvents = "auto";
+      box.style.userSelect = "text";
+      box.onclick = () => box.remove(); // タップで消せる
+      document.body.appendChild(box);
+    }
+    box.textContent = text;
+    return true;
+  };
+}
+/* =========================
    v3.0203 (45 basic / paid 25 + allstar)
 ========================= */
 const APP_VERSION = "v3.0203";
