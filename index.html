@@ -1539,7 +1539,7 @@ function endResult(){
   let img = (g.score && g.score[key]) ? g.score[key] : g.top;
 const line = (g.scoreText && g.scoreText[key]) ? g.scoreText[key] : "";
 if(line){
-  setTimeout(()=> setSpeechPlain(line), 520);
+  setTimeout(()=> setTextWithHeart(line), 520);
 }
   gameBg.style.backgroundImage = `url("${img}")`;
 
