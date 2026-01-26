@@ -641,12 +641,13 @@ function setPreviewKey(k){ localStorage.setItem(GIRL_PREVIEW_KEY, k); }
 
 /* unlocked default */
 (function ensureUnlockedDefault(){
+  if(!DEBUG) return; // ★デバッグ時だけ実行
+
   try{
     const cur = JSON.parse(localStorage.getItem(UNLOCK_KEY) || "[]");
     const base = Array.isArray(cur) ? cur : [];
-    const need = ["A","B","C","D","E"]; // ←今は試しでDEも入れる
+    const need = ["A","B","C","D","E"]; // デバッグで見たい子だけ追加
 
-    // 既存 + 不足追加
     const merged = Array.from(new Set([...base, ...need]));
     localStorage.setItem(UNLOCK_KEY, JSON.stringify(merged));
   }catch(e){
@@ -816,7 +817,7 @@ const questions = [
 ];
 
 /* ===== 45基本 / 課金で25解放 ===== */
-let quiz25Unlocked = true; // ←今はデバッグ。課金実装で localStorage/ストア判定に差し替え
+let quiz25Unlocked = DEBUG ? true : false; // デバッグ中は解放
 let quizLengthMode = "45"; // "45" or "25"
 let playQuestions = [];
 
@@ -937,7 +938,7 @@ function clearCheeTimeouts(){
    ONなら「診断」も「チー娘」も全部オールスター
 ===================== */
 const ALLSTAR_ENABLED_KEY = "allStarEnabled"; // "1"=ON, "0" or null=OFF
-let allStarUnlocked = true;  // 今はデバッグでtrue（課金判定に差し替え予定）
+let allStarUnlocked = DEBUG ? true : false; // デバッグ中は解放
 let allStarEnabled = false;  // ユーザーのON/OFF
 
 /* unlocked girls: localStorage から取得（無ければA/B/C） */
