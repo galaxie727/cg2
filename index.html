@@ -225,7 +225,13 @@ header{
 }
 #gameScreen.chee .bg{transform:scale(1.12)}
 #gameScreen.hold .bg{filter:brightness(.92)}
-
+/* ▼ 追加：選択肢を画面下に固定 */
+#gameScreen .choices{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:calc(env(safe-area-inset-bottom) + 16px);
+}
 .vignette{
   position:absolute;inset:0;
   pointer-events:none;
