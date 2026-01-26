@@ -569,6 +569,11 @@ window.onerror = function (msg, src, line, col, err) {
   box.textContent = text;
   return true;
 };
+
+/* =========================
+   GIFTED DEBUG MODE
+========================= */
+const DEBUG_GIFTED = true; // ←チギュテッド確認したい時だけ true
 /* =========================
    DEBUG SWITCH
 ========================= */
@@ -853,6 +858,11 @@ const STAGE3_BOOST_MULT = 1.35;
 
 /* score */
 function rollScore(){
+  // ★デバッグ：必ずチギュテッド
+  if(DEBUG && DEBUG_GIFTED){
+    return 100;
+  }
+
   const r = Math.random();
   if(r < 0.02) return 100;
   return randInt(80, 99);
