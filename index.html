@@ -403,40 +403,37 @@ header{
 #resultBox .pct{ font-size:88px; font-weight:900; line-height:1; }
 #resultBox .pct small{ font-size:20px; opacity:.95; margin-left:2px; }
 
-/* ===== RESULT：白地＋黒文字（顔にかからない上位置、右下にセリフ） ===== */
-
-/* RESULTでも問題と同じ「吹き出し」だが白地にする */
+/* ===== RESULT：白地＋黒文字 / 小さめ吹き出し / 右下表示（決定版） ===== */
 #gameScreen.result .bubble{
-  position:relative;                 /* セリフ配置の基準 */
-  background:rgba(255,255,255,.90);  /* 白地 */
+  background:rgba(255,255,255,.90);
   border-radius:22px;
-  padding:18px 20px;
-  min-height:130px;
+  padding:16px 18px;
   box-shadow:0 12px 30px rgba(0,0,0,.35);
-  text-shadow:none;                  /* 黒文字にするので */
+
+  /* ★ここがポイント：中身に合わせて小さくする */
+  min-height:0;
+  display:flex;
+  justify-content:flex-end; /* 下 */
+  align-items:flex-end;     /* 右 */
 }
 
-/* RESULTのセリフは吹き出し右下 */
 #gameScreen.result #speech{
-  position:absolute;
-  right:12px;
-  bottom:10px;
-
+  position:static;          /* ★absoluteやめる */
+  margin:0;
   text-align:right;
+
   font-size:20px;
   font-weight:900;
   letter-spacing:.06em;
   line-height:1.25;
 
-  color:#111;                        /* 黒文字 */
-  text-shadow:none;                  /* 黒文字なので影なし */
-
-  max-width:80%;
+  color:#111;
+  text-shadow:none;
+  max-width:100%;
   white-space:normal;
   pointer-events:none;
 }
 
-/* ❤だけ赤はそのまま、影はなし */
 #gameScreen.result #speech .heartOnly{
   text-shadow:none;
 }
