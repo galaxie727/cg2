@@ -1533,6 +1533,87 @@ function renderEndButtonsDelayed(delayMs){
     applyRandomColorsToButtons();
   }, delayMs);
 }
+/* =========================
+   CHIGYUTED ENDING (score=100)
+========================= */
+let giftedMode = false;
+let giftedStep = 0;
+let giftedGirl = null;
+
+/* 100%専用：会話テキスト（必要なら女の子別に分岐してもOK） */
+function getGiftedScript(g){
+  return [
+    { q: "……ちょっと待って。", a: ["はい","いいえ","チー","ギュウ"] },
+    { q: "今、100%出たって…わかってる？", a: ["はい","いいえ","チー","ギュウ"] },
+    { q: "一応確認。チーと言えば？", a: ["はい","いいえ","チー","ギュウ"], correct:"ギュウ" },
+    { q: "……うん。あなたは", a: ["はい","いいえ","チー","ギュウ"] },
+    { q: "チー牛ギフテッド（チギュテッド）だよ❤", a: ["はい","いいえ","チー","ギュウ"] }
+  ];
+}
+
+/* RESULTで4択を出す（answer()は使わず、ここ専用で処理） */
+function renderGiftedChoices(labels){
+  choicesEl.classList.remove("chee10");
+  choicesEl.innerHTML = "";
+  labels.forEach(label=>{
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.className = "choice";
+    b.onclick = ()=> giftedAnswer(label);
+    choicesEl.appendChild(b);
+  });
+  applyRandomColorsToButtons();
+  setButtonsEnabled(true);
+}
+
+/* 100%開始 */
+function startGiftedEnding(g){
+  giftedMode = true;
+  giftedStep = 0;
+  giftedGirl = g;
+
+  // RESULT中でもボタン触れるように（ended=trueのままだとanswer()は止まるが、ここは独自onclickなのでOK）
+  setButtonsEnabled(true);
+
+  // まずは最初のセリフ
+  const script = getGiftedScript(giftedGirl);
+  clearSpeech();
+  setTextWithHeart(script[0].q); // 既存の❤️付き表示を流用
+  renderGiftedChoices(script[0].a);
+}
+
+/* 100%中の回答処理 */
+function giftedAnswer(t){
+  if(!giftedMode) return;
+
+  const script = getGiftedScript(giftedGirl);
+  const cur = script[giftedStep];
+
+  // 「正解が必要なステップ」だけ判定（例：チーと言えば？）
+  if(cur && cur.correct && t !== cur.correct){
+    // チギュテッドだけは軽く遊ぶ：外しても怒らず「……」→同じ質問
+    clearSpeech();
+    setSpeechPlain("……");
+    setTimeout(()=>{
+      clearSpeech();
+      setTextWithHeart(cur.q);
+    }, 450);
+    return;
+  }
+
+  giftedStep++;
+  if(giftedStep >= script.length){
+    // 終了：通常の終端ボタンを出す
+    giftedMode = false;
+    renderEndButtonsDelayed(0);
+    return;
+  }
+
+  const next = script[giftedStep];
+  clearSpeech();
+  setTextWithHeart(next.q);
+  renderGiftedChoices(next.a);
+}
 
 /* result */
 function animatePercent(to){
