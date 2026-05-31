@@ -927,6 +927,7 @@ let i = 0;
 let rafId = 0;
 let cheeCooldown = false;
 let lastGyuuIndex = -1;
+let gyuuRecentIndexes = [];
 let cheeStage = 1;
 let isNewRecordRun = false;
 
@@ -1186,24 +1187,50 @@ function buildChoicesChee10(){
     "はい","いいえ","チー","ポン","カン","ドン","モー","牛","チーズ","特盛り",
     "並","大盛り","湯気","ニコッ","クスッ","笑","うし","ぎゅ","チー牛","牛丼"
   ];
-  const nine = shuffle(decoys.filter(x=>x!=="ギュウ")).slice(0, 9);
-  let labels = ["ギュウ", ...nine];
 
-  for(let k=0;k<10;k++){
-    labels = shuffle(labels);
-    const idx = labels.indexOf("ギュウ");
-    if(idx !== lastGyuuIndex){ lastGyuuIndex = idx; break; }
+  const nine = shuffle(decoys.filter(x => x !== "ギュウ")).slice(0, 9);
+
+  // 10個の空枠を作る
+  const labels = new Array(10).fill("");
+
+  // ★ギュウの位置を完全ランダム
+  // 直近3回と同じ場所はなるべく避ける
+  let candidates = Array.from({length:10}, (_,i)=>i)
+    .filter(idx => !gyuuRecentIndexes.includes(idx));
+
+  if(candidates.length === 0){
+    candidates = Array.from({length:10}, (_,i)=>i);
   }
 
+  const gyuuIndex = pick(candidates);
+  labels[gyuuIndex] = "ギュウ";
+
+  // 残り9枠にダミーをランダム配置
+  const restIndexes = shuffle(
+    Array.from({length:10}, (_,i)=>i).filter(i => i !== gyuuIndex)
+  );
+
+  nine.forEach((word, idx)=>{
+    labels[restIndexes[idx]] = word;
+  });
+
+  // 履歴更新
+  gyuuRecentIndexes.push(gyuuIndex);
+  if(gyuuRecentIndexes.length > 3) gyuuRecentIndexes.shift();
+
+  lastGyuuIndex = gyuuIndex;
+
   choicesEl.classList.add("chee10");
-  choicesEl.innerHTML="";
+  choicesEl.innerHTML = "";
+
   labels.forEach(label=>{
-    const b=document.createElement("button");
+    const b = document.createElement("button");
     b.textContent = label;
-    b.className="choice";
-    b.onclick=()=>answer(label);
+    b.className = "choice";
+    b.onclick = () => answer(label);
     choicesEl.appendChild(b);
   });
+
   applyRandomColorsToButtons();
 }
 
