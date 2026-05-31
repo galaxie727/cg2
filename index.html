@@ -1387,7 +1387,9 @@ showCheeAnnounce();
     locked=false;
 
     gameScreen.classList.add("chee");
-    if(level.stars >= 3) gameScreen.classList.add("stage3plus");
+    if(gameMode === "cheeOnly" && level.stage % 10 === 0){
+  gameScreen.classList.add("stage3plus");
+}
 
     // 暗転演出（必要なら残す）
     gameScreen.classList.add("cut");
