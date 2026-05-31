@@ -280,7 +280,11 @@ header{
 #gameScreen .announce > span{
   position:relative;
   z-index:1;
-  font-size:26px; /* でかさはここ */
+  font-size:26px;
+  line-height:1.35;
+  text-align:center;
+  display:block;
+  width:100%;
 }
 
 .flash{ position:absolute; inset:0; background:rgba(255,255,255,.22); opacity:0; pointer-events:none; transition:opacity .08s ease-out; }
