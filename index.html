@@ -1305,8 +1305,8 @@ function cheeOnlyPickStage(){
   let stage = cheeStage;
   if(Math.random() < 0.25) stage = Math.max(1, stage - (Math.random()<0.7 ? 1 : 2));
   const stars = stage <= 1 ? 1 : (stage === 2 ? 2 : 3);
-  const base = 2400 - (stage - 1) * 120;
-  const timeMs = Math.max(550, Math.round(base));
+  const base = 3200 - (stage - 1) * 45;
+  const timeMs = Math.max(1200, Math.round(base));
   const gaugeType = stars === 1 ? "cool" : (stars === 2 ? "yellow" : "red");
   return { stars, timeMs, gauge:gaugeType, stage };
 }
